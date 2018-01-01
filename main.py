@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 
 from scipy.misc import imsave
 
-from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram
+from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram, open_morph, close_morph
 from histogram import analyze_histogram, plot_histogram, analyze_color_histogram, plot_color_histogram
 from features import get_mean_area
 
@@ -55,7 +55,7 @@ def segment_object(img):
 
     return result
 
-def get_processed_image(img, threshVal):
+def get_processed_image(img, threshVal, kernelSize):
     """
     preprocess image before segmented
     """
@@ -64,10 +64,11 @@ def get_processed_image(img, threshVal):
     img = convert_to_gray(img)
     img = equalize_histogram(img)
     ret, img = threshold(img, threshVal)
-    
-    result = segment_object(img)
+    img = segment_object(img)
 
-    imsave("./roi/img-thresh" + str(threshVal) + ".jpg", result)
+    result = close_morph(img, kernelSize)
+
+    imsave("./roi/img-thresh" + str(threshVal) + "-close" + str(kernelSize) + ".jpg", result)
 
     return result
 
@@ -78,16 +79,18 @@ def main():
     parser.add_argument('--path', default='./soilsection/DSCN3342.JPG')
     parser.add_argument('--resize', default=6, type=int)
     parser.add_argument('--threshVal', default=127, type=int)
+    parser.add_argument('--kernelSize', default=10, type=int)
     args = parser.parse_args()
 
     path = args.path
     resize = args.resize
     threshVal = args.threshVal
+    kernelSize = args.kernelSize
 
     print(args)
 
     img = load_image(path, resize)
-    result = get_processed_image(img, threshVal)
+    result = get_processed_image(img, threshVal, kernelSize)
 
     cv2.imshow('Original Image', img)
     cv2.imshow('Result', result)

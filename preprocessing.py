@@ -23,8 +23,10 @@ def contrast(img):
     return img
 
 
-def convolve(img):
-    pass
+def convolve(img,size,divider):
+    kernel = np.ones((size,size),np.float32)/divider
+    img = cv2.filter2D(img,-1,kernel)
+    return img
 
 
 def equalize_histogram(img):

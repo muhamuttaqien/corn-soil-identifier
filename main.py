@@ -8,6 +8,7 @@ import os
 
 import cv2
 import numpy as np
+from scipy import ndimage
 from matplotlib import pyplot as plt
 
 from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram
@@ -26,11 +27,17 @@ def load_image(path, resize):
     return img
 
 
-def get_connected_components():
+def segment_object(img):
     """
-    segment image to get region of interest
+    segment object to get region of interest using connected components and finding countures techniques
     """
-    pass
+    # connected components technique
+    labeled, nr_objects = ndimage.label(img)
+    component_size = np.bincount(labeled.flat)
+
+    big_component = np.where(component_size > 200)
+
+    # finding contures technique
 
 
 def get_processed_image(img):

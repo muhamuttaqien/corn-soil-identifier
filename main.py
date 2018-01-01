@@ -12,6 +12,7 @@ from matplotlib import pyplot as plt
 
 from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram
 from histogram import analyze_histogram, plot_histogram, analyze_color_histogram, plot_color_histogram
+from features import get_mean_area
 
 
 def load_image(path, resize):
@@ -26,6 +27,9 @@ def load_image(path, resize):
 
 
 def get_connected_components():
+    """
+    segment image to get region of interest
+    """
     pass
 
 

@@ -7,9 +7,9 @@ def convert_to_gray(img):
     img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     return img
 
-def threshold(img):
+def threshold(img, val):
 
-    ret, img = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+    ret, img = cv2.threshold(img,val,255,cv2.THRESH_BINARY)
     return ret, img
 
 def remove_noise(img):

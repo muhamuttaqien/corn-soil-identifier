@@ -11,50 +11,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram
-
-
-
-def analyze_histogram(img):
-    """
-    find and analyze histogram
-    """
-    # convert first
-    img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    
-    # analyze it
-    hist = cv2.calcHist([img],[0],None,[256],[0,256])
-
-    return hist
-
-
-def plot_histogram(img):
-    """
-    plot and analyze histogram for gray image
-    """
-    hist = cv2.calcHist([img],[0],None,[256],[0,256])
-
-    plt.hist(hist, facecolor='green')
-    plt.title('Histogram'), plt.xlabel("Scale"), plt.ylabel("Quantity")
-    plt.grid(True)
-
-    plt.show()
-
-
-def plot_color_histogram(img):
-    """
-    plot and analyze histogram for color image
-    """
-    color = ('b', 'g', 'r')
-    for i, col in enumerate(color):
-        hist = cv2.calcHist([img],[i],None,[256],[0,256])
-        
-        plt.hist(hist, color = col)
-        plt.xlim([0,256])
-    
-    plt.title('Color Histogram'), plt.xlabel("Scale"), plt.ylabel("Quantity")
-    plt.grid(True)
-
-    plt.show()
+from histogram import analyze_histogram, plot_histogram, analyze_color_histogram, plot_color_histogram
 
 
 def load_image(path, resize):
@@ -96,7 +53,6 @@ def main():
     resize = args.resize
 
     img = load_image(path, resize)
-    plot_color_histogram(img)
     ret, result = get_processed_image(img)
 
     cv2.imshow('Original Image', img)

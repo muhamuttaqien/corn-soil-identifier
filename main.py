@@ -22,16 +22,16 @@ def load_image(path, resize):
     """
     load soil image and resize proportionally 
     """
-    img = cv2.imread(path)
-    height, width, _ = img.shape
-    img = cv2.resize(img, (int(round(width/resize)), int(round(height/resize))))
+    original_img = cv2.imread(path)
+    height, width, _ = original_img.shape
+    original_img = cv2.resize(original_img, (int(round(width/resize)), int(round(height/resize))))
 
-    return img
+    return original_img
 
 
-def segment_object(img):
+def get_connected_components(img):
     """
-    segment object to get region of interest using connected components and finding countures techniques
+    get connected components of soilsection images
     """
     # find connected components
     labeled, nr_objects = ndimage.label(img)
@@ -55,21 +55,35 @@ def segment_object(img):
 
     return result
 
-def get_processed_image(img, threshVal, kernelSize):
+
+def segment_object(original_img, processed_img):
+    """
+    segment object to get region of interest by finding countures techniques
+    """
+    result, contours, hierarchy = cv2.findContours(processed_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(original_img, contours, -1, (0,255,0), 3)
+    
+    return result, contours, hierarchy
+
+
+def get_processed_image(original_img, threshVal, kernelSize):
     """
     preprocess image before segmented
     """
-    img = contrast(img)
-    img = remove_noise(img)
-    img = convert_to_gray(img)
-    img = equalize_histogram(img)
-    ret, img = threshold(img, threshVal)
-    img = segment_object(img)
+    imsave("./roi/img-original.jpg", original_img)
+    
+    processed_img = contrast(original_img)
+    processed_img = remove_noise(processed_img)
+    processed_img = convert_to_gray(processed_img)
+    processed_img = equalize_histogram(processed_img)
+    ret, processed_img = threshold(processed_img, threshVal)
+    processed_img = get_connected_components(processed_img)
+    processed_img = close_morph(processed_img, kernelSize)
+    imsave("./roi/img-thresh" + str(threshVal) + "-close" + str(kernelSize) + ".jpg", processed_img)
 
-    result = close_morph(img, kernelSize)
-
-    imsave("./roi/img-thresh" + str(threshVal) + "-close" + str(kernelSize) + ".jpg", result)
-
+    result, contours, hierarchy = segment_object(original_img, processed_img)
+    imsave("./roi/img-thresh" + str(threshVal) + "-close" + str(kernelSize) + "-segmented" + ".jpg", original_img)
+    
     return result
 
 
@@ -89,10 +103,10 @@ def main():
 
     print(args)
 
-    img = load_image(path, resize)
-    result = get_processed_image(img, threshVal, kernelSize)
+    original_img = load_image(path, resize)
+    result = get_processed_image(original_img, threshVal, kernelSize)    
 
-    cv2.imshow('Original Image', img)
+    cv2.imshow('Original Image', original_img)
     cv2.imshow('Result', result)
 
     cv2.waitKey(0)

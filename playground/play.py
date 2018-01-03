@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+
 import cv2
+import math
 import numpy as np
 from scipy import ndimage
 from matplotlib import pyplot as plt
 
 from scipy.misc import imsave
+
 
 # CONNECTED COMPONENT
 

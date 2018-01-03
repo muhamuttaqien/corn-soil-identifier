@@ -50,7 +50,7 @@ def get_connected_components(img):
     big_count = len(big_component[0])
 
     result = np.where(big > 0, 255,0)
-
+    
     result = np.array(result, dtype=np.uint8)
 
     return result

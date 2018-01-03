@@ -9,14 +9,23 @@ from matplotlib import pyplot as plt
 from scipy.misc import imsave
 
 
-# CONNECTED COMPONENT
+# COLOR AVERAGE
 
-img = cv2.imread('./rectangle.jpg')
+img = cv2.imread('./fruit.jpeg')
+img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-ret, thresh = cv2.threshold(gray, 127, 255, 0)
-result, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+chans = cv2.split(img_rgb)
+colors = ("hue", "saturation", "value")
+features = []
 
-cv2.drawContours(img, contours, -1, (0,255,0), 3)
 
-imsave('./rectangle-with-contours.jpg', img)
+# loop over the image channels
+for (chan, color) in zip(chans, colors):
+    # create histogram for each channel
+    hist = cv2.calcHist([chan], [0], None, [8], [0, 256])
+    hist = hist/hist.sum()
+
+    features.append({ color: hist })
+
+
+print(features)

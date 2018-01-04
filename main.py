@@ -18,7 +18,7 @@ from histogram import analyze_histogram, plot_histogram, analyze_color_histogram
 
 from features.color import get_mean, get_std, get_skew, get_rgb_avg, get_rgb_histogram, get_hsv_avg, get_hsv_histogram
 from features.corners import get_corner
-from features.texture import get_mean, get_std, get_glcm, get_lbp
+from features.texture import get_glcm, get_lbp
 
 
 def load_image(path, resize):

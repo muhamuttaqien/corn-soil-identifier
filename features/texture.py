@@ -7,13 +7,6 @@ from matplotlib import pyplot as plt
 
 from skimage.feature import greycomatrix, greycoprops, local_binary_pattern
 
-def get_mean(img):
-    pass
-
-
-def get_std(img):
-    pass
-
 
 def get_glcm(img):
     # compute the Gray Level Co-occurence Matrix representation

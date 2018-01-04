@@ -8,22 +8,21 @@ from matplotlib import pyplot as plt
 
 
 def get_mean(img):
-
     mean = np.mean(img, axis=0)
     return mean
 
-def get_std(img):
 
+def get_std(img):
     std = np.std(img, axis=0)
     return std
 
-def get_skew(img):
 
-    skew = skew(img_rgb)
+def get_skew(img):
+    skew = skew(img)
     return skew
 
-def get_rgb_avg(img):
 
+def get_rgb_avg(img):
     # convert image to RGB
     img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
@@ -51,7 +50,7 @@ def get_rgb_avg(img):
 
 
 def get_rgb_histogram(img):
-
+    # convert image to RGB
     image = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
     # grab the image channels, initialize the tuple of colors,
@@ -73,8 +72,7 @@ def get_rgb_histogram(img):
 
 
 def get_hsv_avg(img):
-
-    # convert image to RGB
+    # convert image to HSV
     img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
     # grab the image channels, initialize the tuple of colors,
@@ -101,7 +99,7 @@ def get_hsv_avg(img):
 
 
 def get_hsv_histogram(img):
-
+    # convert image to HSV
     image = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
     # grab the image channels, initialize the tuple of colors,

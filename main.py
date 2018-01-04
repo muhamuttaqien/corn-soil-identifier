@@ -16,9 +16,9 @@ from scipy.misc import imsave
 from preprocessing import convert_to_gray, threshold, remove_noise, contrast, convolve, equalize_histogram, open_morph, close_morph
 from histogram import analyze_histogram, plot_histogram, analyze_color_histogram, plot_color_histogram
 
-from features.color import get_rgb_avg, get_rgb_histogram, get_hsv_avg, get_hsv_histogram
-from features.corners import *
-from features.texture import *
+from features.color import get_mean, get_std, get_skew, get_rgb_avg, get_rgb_histogram, get_hsv_avg, get_hsv_histogram
+from features.corners import get_corner
+from features.texture import get_mean, get_std, get_glcm, get_lbp
 
 
 def load_image(path, resize):

@@ -5,11 +5,17 @@ import math
 import numpy as np
 from matplotlib import pyplot as plt
 
-# features extracted from textures are
-# texture: mean, standard deviation, energy, entropy, skewness, variance, homogenity, kurtosis, smoothness
-# geometric: area, perimeter, eccentricity, orientation, convexity, equivalent diameter, compactness
 
-# color: mean, standard deviation, skewness, color histogram, color average
-# corner
-# shape: edge detection
-# texture: mean, standard deviation, GLCM (scikit-image), local binary patterns (scikit-image)
+def get_mean(img):
+    pass
+
+def get_std(img):
+    pass
+
+def get_glcm(img):
+    # get mean, standard deviation, energy, entropy, homogenity, contrast
+    pass
+
+def get_lbp(img):
+    # get mean, standard deviation, energy, entropy, homogenity, contrast
+    pass

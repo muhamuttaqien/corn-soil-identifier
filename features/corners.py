@@ -7,30 +7,31 @@ import cv2  # opencv 2
 from matplotlib import pyplot as plt
 from matplotlib import pyplot as plt
 
+from skimage.feature import corner_peaks, corner_orientations
 
-def getCornerFeatures(img):
-
+def get_corner(img):
+    # convert image to GRAY
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     corners = skimage.feature.corner_peaks(skimage.feature.corner_fast(gray, 14), min_distance=1)
     orientations = skimage.feature.corner_orientations(gray, corners, octagon[3, 2])
     corners = np.rad2deg(orientations)
 
     corners = np.array(corners)
-    AngleBins = np.arrange(0,360,45)
-    AngleBinsOrientation = np.array([0, 1, 2, 1, 0, 1, 2, 1])
-    OrientationHist = np.zeros((3,1))
+    angle_bins = np.arrange(0,360,45)
+    angle_bins_orientation = np.array([0, 1, 2, 1, 0, 1, 2, 1])
+    orientation_hist = np.zeros((3,1))
 
     for a in corners:
-        OrientationHist[AngleBinsOrientation[np.argmin(np.abs(a-AngleBins))]] += 1
+        orientation_hist[angle_bins_orientation[np.argmin(np.abs(a-angle_bins))]] += 1
 
-    if OrientationHist.sum()>0:
-        OrientationHist = OrientationHist / OrientationHist.sum()
+    if orientation_hist.sum()>0:
+        orientation_hist = orientation_hist / orientation_hist.sum()
     else:
-        OrientationHist = - 0.01*np.ones((3,1))
+        orientation_hist = - 0.01*np.ones((3,1))
 
-    F = []
-    F.extend(OrientationHist[:,0].tolist())
-    F.append(100.0*float(len(corners))) / (gray.shape[0] * gray.shape[1])
-    Fnames = ["Corners-Hor", "Corners-Diag", "Corners-Ver", "Corners-Percent"]
+    features = []
+    features.extend(orientation_hist[:,0].tolist())
+    features.append(100.0*float(len(corners))) / (gray.shape[0] * gray.shape[1])
+    f_names = ["Corners-Hor", "Corners-Diag", "Corners-Ver", "Corners-Percent"]
 
-    return (F, Fnames)
+    return features, f_names

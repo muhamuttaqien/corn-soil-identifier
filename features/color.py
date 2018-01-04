@@ -3,8 +3,24 @@
 import cv2
 import math
 import numpy as np
+from scipy.stats import skew
 from matplotlib import pyplot as plt
 
+
+def get_mean(img):
+
+    mean = np.mean(img, axis=0)
+    return mean
+
+def get_std(img):
+
+    std = np.std(img, axis=0)
+    return std
+
+def get_skew(img):
+
+    skew = skew(img_rgb)
+    return skew
 
 def get_rgb_avg(img):
 
